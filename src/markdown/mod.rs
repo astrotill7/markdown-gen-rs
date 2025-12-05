@@ -4,6 +4,7 @@ use Escaping::{InlineCode, Normal};
 
 #[cfg(test)]
 mod tests;
+mod tables;
 
 /// Specifies string escaping mode
 #[derive(Clone, Copy)]
@@ -12,6 +13,8 @@ pub enum Escaping {
     Normal,
     /// Inline code will be surrounded by enough backticks to escape the contents
     InlineCode,
+
+    None,
 }
 
 /// Struct for generating Markdown
@@ -743,6 +746,9 @@ impl MarkdownWritable for &str {
                 write_escaped(writer, self.as_bytes(), b"\\`*_{}[]()#+-.!", line_prefix)?;
             }
             InlineCode => {
+                writer.write_all(self.as_bytes())?;
+            }
+            Escaping::None => {
                 writer.write_all(self.as_bytes())?;
             }
         }
