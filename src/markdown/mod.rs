@@ -45,6 +45,10 @@ impl<W: Write> Markdown<W> {
         element.write_to(&mut self.writer, false, Normal, None)?;
         Ok(())
     }
+    pub fn write_no_escape<T: MarkdownWritable>(&mut self, element: T) -> Result<(), io::Error> {
+        element.write_to(&mut self.writer, false, Escaping::None, None)?;
+        Ok(())
+    }
 }
 
 /// Trait for objects writable to Markdown documents
